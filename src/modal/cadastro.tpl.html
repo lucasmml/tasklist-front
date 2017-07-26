@@ -1,0 +1,23 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Nova Task</h4>
+        </div>
+        <div class="modal-body">
+			<form>
+				<label for="title">Título:</label>
+				<br>
+				<input type="text" name="title" id="new-task-title" maxlength="40">
+				<br>
+				<label for="description">Descrição:</label>
+				<br>
+				<textarea rows="4" cols="60" name="description" id="new-task-description"/>
+			</form>
+        </div>
+		<div class="modal-footer">
+            <button type="submit" class="btn btn-primary btn-sm" onclick="cadastrarTask();" >Salvar</button>
+            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+body{
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+}
+
+a{
+    color: #6C9A0D;
+}
+
+a:hover, a:focus, a:active{
+    color: #5B820B;
+}

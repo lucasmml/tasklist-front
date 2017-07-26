@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<title>Task List</title>
+
+		<!-- Bootstrap -->
+		<link href="dependencies/bootstrap-3.3.6-dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="dependencies/icones/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet">
+		<link href="dependencies/icones/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet">
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/main.css" rel="stylesheet">
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+	
+	<h2 class="text-center">Task List - Supero TI - Prova Técnica</h2>
+	
+	<div style="overflow-y: scroll; height:500px;">
+		<!--Coluna 1-->
+		<div class="content-my-task" style="width:33%;">
+			<p style="margin-top:10px">
+				<a id="novaTask" title="Nova Task" role="button" data-toggle="modal" data-target="#cadastrar-task" aria-expanded="false" aria-controls="cadastrar-task" href="#">
+					<i class="fa fa-plus-circle pull-left"></i>
+				</a>
+			</p>
+			<h4 class="text-center">Todo</h4>
+			<div class="msn-empty">Arraste aqui a nova tarefa</div>
+			
+			<ul class="list-group list-group-sortable-connected" id="todo">
+			</ul>
+		</div>
+		
+		<!--Coluna 2-->
+		<div class="content-my-task" style="width:33%;">
+			<h4 class="text-center">Doing</h4>
+			<div class="msn-empty">Arraste aqui a tarefa em andamento</div>
+
+			<ul class="list-group list-group-sortable-connected" id="doing">
+			</ul>
+		</div>
+		
+		<!--Coluna 3-->
+		<div class="content-my-task" >
+			<h4 class="text-center">Done</h4>
+			<div class="msn-empty">Arraste aqui a tarefa concluída</div>
+
+			<ul class="list-group list-group-sortable-connected" id="done">
+			</ul>
+		</div>
+		
+		
+		
+		<div class="content-my-task" style="display:none">
+			<ul class="list-group list-group-sortable-connected" id="escondido">
+				<li class="list-group-item task-detail" id="newtask">
+					<div class="header-task-detail">
+						<input type="text" name="id" id="id" style="display:none; border: none">
+						<input type="text" name="status" id="status" style="display:none; border: none">
+						<div class="pull-left">
+							<input type="text" name="dateadded" class="text-left" id="dateadded" style="border: none; font-size: 11px; color: #333">
+						</div>
+						<div class="pull-right">
+							<div class="dropdown pull-right" style="margin-left: 5px">
+								<a class="btn btn-default dropdown-toggle" id="tarefa4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+									<i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="tarefa4">
+									<li><a id="btneditar" href="#" data-toggle="modal">Editar</a></li>
+									<li><a id="btndeletar" href="#" data-toggle="modal">Deletar</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+							
+						<div>
+							<input type="text" name="title" class="text-center" id="title" style="border: none; font-weight:bold;">
+						</div>
+					</div>
+				</li>
+			</ul>
+			</br>
+		</div>
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="dependencies/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+	
+	<script src="js/kanban/jquery.sortable.js"></script>
+	<script src="js/kanban.js"></script>
+	<script src="js/bootstrap-colorpicker-plus-master/src/js/bootstrap-colorpicker.js"></script>
+	<script src="js/bootstrap-colorpicker-plus-master/src/js/bootstrap-colorpicker-plus.js"></script>
+		
+	<div class="modal fade" id="cadastrar-task" tabindex="-1" role="dialog" aria-labelledby="cadastrar-task"></div>
+	
+	<script>
+		$( "#cadastrar-task" ).load( "src/modal/cadastro.tpl.html", function() {});
+		
+		$(function() {
+			carregarTasks();
+		});
+		
+		function carregarTasks(){
+			$.get("http://localhost:9001/api/tasks", function( tasks ) {
+				for (var i = 0; i < tasks.length; i++) {
+				  criaPostIt(tasks[i].id, tasks[i].title, tasks[i].description, tasks[i].dateadded, tasks[i].status);
+				};
+				refreshKanban();
+			});
+		}
+		
+		function criaPostIt(id, title, description, dateadded, status){
+			if(status == 'TODO'){
+				$('#newtask').clone().attr('id', 'task_'+id).appendTo('#todo');
+			} else if(status == 'DOING'){
+				$('#newtask').clone().attr('id', 'task_'+id).appendTo('#doing');
+			} else if(status == 'DONE'){
+				$('#newtask').clone().attr('id', 'task_'+id).appendTo('#done');
+			} 
+			
+			$('#task_'+id).find('#id').attr('id', 'id'+id);
+			$('#task_'+id).find('#id'+id).val(id);
+			
+			$('#task_'+id).find('#title').attr('id', 'title'+id);
+			$('#task_'+id).find('#title'+id).val(title);
+			
+			$('#task_'+id).find('#status').attr('id', 'status'+id);
+			$('#task_'+id).find('#status'+id).val(status);
+			
+			var date = getFormtedDate(dateadded);
+			$('#task_'+id).find('#dateadded').attr('id', 'dateadded'+id);
+			$('#task_'+id).find('#dateadded'+id).val(date);
+			
+			$('#task_'+id).find('#btneditar').attr('id', 'btneditar'+id);
+			$('#task_'+id).find('#btneditar'+id).click(function() {editarTarefa(id)});
+			
+			$('#task_'+id).find('#btndeletar').attr('id', 'btndeletar'+id);
+			$('#task_'+id).find('#btndeletar'+id).click(function() {deletarTarefa(id)});
+		}
+		
+		function getFormtedDate(dateadded){
+			var date = new Date(dateadded);
+			var year = date.getFullYear();
+			var month = (1 + date.getMonth()).toString();
+			month = month.length > 1 ? month : '0' + month;
+			var day = date.getDate().toString();
+			day = day.length > 1 ? day : '0' + day;
+			return month + '/' + day + '/' + year;
+		}
+		
+		function cadastrarTask(){
+			var new_task = '{"title": "'+$("#new-task-title").val()+'", "description":"'+$("#new-task-description").val()+'"}';
+			
+			 $.ajax({
+				url: "http://localhost:9001/api/task",
+				method: "POST",
+				data: new_task,
+				dataType: 'json',
+				contentType: "application/json",
+				 success: function(result, status, jqXHR ){
+					criaPostIt(result.id, result.title, result.description, result.dateadded, result.status);
+					refreshKanban();
+					$('#cadastrar-task').modal('hide');
+					alert('Nova task cadastrada com sucesso!');
+				 },
+				 error(jqXHR, textStatus, errorThrown){
+					$('#cadastrar-task').modal('hide');
+					alert('Houve um problema ao cadastrar a task. Tente novamente mais tarde.');
+				 }
+			});
+		}
+		
+		function deletarTarefa(taskid){
+			 $.ajax({
+				url: "http://localhost:9001/api/task/"+taskid,
+				method: "DELETE",
+				 success: function(result, status, jqXHR ){
+					refreshKanban();
+					$('#task_'+taskid).hide();
+					alert('Task apagada com sucesso!');
+				 },
+				 error(jqXHR, textStatus, errorThrown){
+					alert('Houve um problema ao deletar a task. Tente novamente mais tarde.');
+				 }
+			});
+		}
+		
+		function editarTarefa(taskid){
+			//TODO
+		}
+		
+	</script>
+	
+	</body>
+</html>

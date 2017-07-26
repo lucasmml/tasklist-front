@@ -1,0 +1,12 @@
+/*FORM ELEMENTS*/
+
+label{
+    color: rgba(0,0,0,.57);
+    font-size: 12px;
+}
+
+/*.form-control{
+    height: 43px;
+    border: solid 2px #bbb;
+    border-radius:0
+}*/

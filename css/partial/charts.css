@@ -1,0 +1,145 @@
+svg {
+    display: block;
+    margin:0;
+    padding:0;
+    height: 100%;
+    width: 100%
+}
+.nvd3 text {
+    font-size: 10px;
+    font-family: 'Roboto'
+}
+
+
+#donut-conclusos{
+    width:300px;
+    height: 275px;
+    margin: auto;
+}
+
+#donut-conclusos .nv-pieLabels .nv-label text {
+    text-transform: uppercase;
+}
+.icon-conclusos{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    background: #f2f2f2;
+    padding-top: 13px;
+    margin-left: -39px;
+    margin-top: -25px;
+}
+
+.icon-conclusos .fa-file-o{
+    font-size:50px;
+    color: #666;
+}
+.icon-conclusos .fa-check{
+    font-size: 35px;
+    color: #AB051D;
+    float: left;
+    margin-top: -25px;
+    position: relative;
+    margin-left: 40px;
+}
+
+#designacoes{
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+.list-chart svg.sparkline {
+    width: 100px !important;
+    height: 50px !important;
+    font-size: 13px;
+    margin-top: -6px;
+}
+
+.dashboard .content-dashboard #decisoes-despachos svg.nvd3-svg{
+    height: 300px !important;
+    pointer-events: none;
+}
+
+.dashboard .content-dashboard #sentencas svg.nvd3-svg{
+    height: 250px !important;
+}
+
+.dashboard .content-dashboard #sentencas svg.nvd3-svg .nv-legendWrap{
+    transform: translate(0,-37px) !important;
+}
+.dashboard .content-dashboard #decisoes-despachos svg.nvd3-svg .nv-controlsWrap{
+    display:none;
+}
+
+.dashboard .content-dashboard #decisoes-despachos svg.nvd3-svg .nv-indexLine {
+    display: none;
+}
+.dashboard .content-dashboard #decisoes-despachos svg.nvd3-svg .nv-legendWrap {
+    transform: translate(0,-39px) !important;
+}
+
+
+/*Cores autos conclusos*/
+
+#donut-conclusos .nvd3.nv-pie path {
+    fill-opacity: .8;
+}
+#donut-conclusos .nvd3.nv-pie .nv-label text{
+}
+#donut-conclusos .nv-slice[fill="#1f77b4"]{
+    fill: rgba(0,0,0,1);
+    stroke: rgba(0,0,0,1);
+    opacity: 1;
+}
+#donut-conclusos .nv-slice[fill="#aec7e8"]{
+    fill: rgba(0,0,0,.8);
+    stroke: rgba(0,0,0,.8);
+    opacity: 1;
+}
+#donut-conclusos .nv-slice[fill="#ff7f0e"]{
+    fill: rgba(0,0,0,.6);
+    stroke: rgba(0,0,0,.6);
+    opacity: 1;
+}
+#donut-conclusos .nv-slice[fill="#ffbb78"]{
+    fill: rgba(0,0,0,.4);
+    stroke: rgba(0,0,0,.4);
+    opacity: 1;
+}
+
+/*Cores Sentenças*/
+
+
+#sentencas .nv-group rect.positive[style="fill: rgb(31, 119, 180); stroke: rgb(31, 119, 180);"],
+#sentencas .nv-group rect.positive[style="fill: #1f77b4; stroke: #1f77b4;" ]{
+    fill: #000 !important;
+    stroke: #000 !important;
+    opacity: 1;
+}
+
+#sentencas .nv-series circle.nv-legend-symbol[style="stroke-width: 2; fill: rgb(31, 119, 180); fill-opacity: 1; stroke: rgb(31, 119, 180);"],
+#sentencas .nv-series circle.nv-legend-symbol[style="fill: #1f77b4; fill-opacity: 1; stroke: #1f77b4; stroke-width: 2;"]{
+    fill: #000 !important;
+    stroke: #000 !important;
+    opacity: 1;
+}
+
+#sentencas .nv-series circle.nv-legend-symbol[style="stroke-width: 2; fill: rgb(174, 199, 232); fill-opacity: 1; stroke: rgb(174, 199, 232);"],
+#sentencas .nv-series circle.nv-legend-symbol[style="fill: #aec7e8; fill-opacity: 1; stroke: #aec7e8; stroke-width: 2;"]{
+    fill: #999 !important;
+    stroke: #999 !important;
+    opacity: 1;
+}
+
+#sentencas .nv-group rect.positive[style="fill: rgb(174, 199, 232); stroke: rgb(174, 199, 232);"],
+#sentencas .nv-group rect.positive[style="fill: #aec7e8; stroke: #aec7e8;"]{
+    fill: #999 !important;
+    stroke: #999 !important;
+    opacity: 1;
+}
