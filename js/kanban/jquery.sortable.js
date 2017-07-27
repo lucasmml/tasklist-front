@@ -61,9 +61,11 @@ $.fn.sortable = function(options) {
 				return true;
 			}
 			if (e.type == 'drop') {
+				var elementId = $(dragging).prop('id');
 				e.stopPropagation();
 				placeholders.filter(':visible').after(dragging);
 				dragging.trigger('dragend.h5s');
+				doAfterDragging(elementId);
 				return false;
 			}
 			e.preventDefault();

@@ -76,6 +76,7 @@
 									<i class="fa fa-ellipsis-v" aria-hidden="true"></i>
 								</a>
 								<ul class="dropdown-menu" aria-labelledby="tarefa4">
+									<li><a id="btndescricao" title="Descricao" role="button" data-toggle="modal" data-target="#task-description" aria-expanded="false" aria-controls="task-description" href="#">Descrição</a></li>
 									<li><a id="btneditar" href="#" data-toggle="modal">Editar</a></li>
 									<li><a id="btndeletar" href="#" data-toggle="modal">Deletar</a></li>
 								</ul>
@@ -105,20 +106,23 @@
 	<script src="js/bootstrap-colorpicker-plus-master/src/js/bootstrap-colorpicker-plus.js"></script>
 		
 	<div class="modal fade" id="cadastrar-task" tabindex="-1" role="dialog" aria-labelledby="cadastrar-task"></div>
+	<div class="modal fade" id="task-description" tabindex="-1" role="dialog" aria-labelledby="task-description"></div>
 	
 	<script>
 		$( "#cadastrar-task" ).load( "src/modal/cadastro.tpl.html", function() {});
+		$( "#task-description" ).load( "src/modal/descricao.tpl.html", function() {});
 		
 		$(function() {
 			carregarTasks();
 		});
 		
 		function carregarTasks(){
-			$.get("http://localhost:9001/api/tasks", function( tasks ) {
+			$.get("http://localhost:9001/api/tasks", function(tasks) {
 				for (var i = 0; i < tasks.length; i++) {
 				  criaPostIt(tasks[i].id, tasks[i].title, tasks[i].description, tasks[i].dateadded, tasks[i].status);
 				};
 				refreshKanban();
+				doAfterDragging();
 			});
 		}
 		
@@ -149,6 +153,11 @@
 			
 			$('#task_'+id).find('#btndeletar').attr('id', 'btndeletar'+id);
 			$('#task_'+id).find('#btndeletar'+id).click(function() {deletarTarefa(id)});
+			
+			$('#task_'+id).find('#btndescricao').attr('id', 'btndescricao'+id);
+			$('#task_'+id).find('#btndescricao'+id).click(function() {
+				$( "#task-description" ).load( "src/modal/descricao.tpl.html", function() {});
+			});
 		}
 		
 		function getFormtedDate(dateadded){
@@ -170,16 +179,16 @@
 				data: new_task,
 				dataType: 'json',
 				contentType: "application/json",
-				 success: function(result, status, jqXHR ){
-					criaPostIt(result.id, result.title, result.description, result.dateadded, result.status);
-					refreshKanban();
-					$('#cadastrar-task').modal('hide');
-					alert('Nova task cadastrada com sucesso!');
-				 },
-				 error(jqXHR, textStatus, errorThrown){
-					$('#cadastrar-task').modal('hide');
-					alert('Houve um problema ao cadastrar a task. Tente novamente mais tarde.');
-				 }
+					success: function(result, status, jqXHR){
+						criaPostIt(result.id, result.title, result.description, result.dateadded, result.status);
+						refreshKanban();
+						$('#cadastrar-task').modal('hide');
+						alert('Nova task cadastrada com sucesso!');
+				},
+					error(jqXHR, textStatus, errorThrown){
+						$('#cadastrar-task').modal('hide');
+						alert('Houve um problema ao cadastrar a task. Tente novamente mais tarde.');
+				}
 			});
 		}
 		
@@ -187,7 +196,7 @@
 			 $.ajax({
 				url: "http://localhost:9001/api/task/"+taskid,
 				method: "DELETE",
-				 success: function(result, status, jqXHR ){
+				 success: function(result, status, jqXHR){
 					refreshKanban();
 					$('#task_'+taskid).hide();
 					alert('Task apagada com sucesso!');
@@ -202,6 +211,30 @@
 			//TODO
 		}
 		
+		function doAfterDragging(elementId){
+			var element = $('#'+elementId);
+			if($(element).prop('id')){
+				var status = $(element).parent().prop('id');
+				var id = $(element).prop('id');
+				var taskid = id.split("task_")[1];
+				console.log(status);
+				console.log(taskid);
+				
+				$.ajax({
+					type: 'PUT',
+					url: "http://localhost:9001/api/task/"+taskid,
+					data: '{"status": "'+status+'"}',
+					dataType: 'json',
+					contentType: "application/json",
+					success: function(result, status, jqXHR){
+						//DO NOTHING
+					},
+					 error(jqXHR, textStatus, errorThrown){
+						alert('Houve um problema ao atualizar o status da task. Tente novamente mais tarde.');
+					 }
+				});
+			}
+		}
 	</script>
 	
 	</body>
